@@ -2,8 +2,11 @@
 #include <avr/interrupt.h>
 #include "lcd.h"
 
+
 // Global variable to count the number of milliseconds
 volatile uint16_t lcd_ms_count = 0;
+
+void display7Segment(uint8_t combinedState);
 
 void lcd_init() {
     DDRB |= (1 << LCD_RS) | (1 << LCD_EN) | (1 << LCD_D4) | (1 << LCD_D5) | (1 << LCD_D6) | (1 << LCD_D7);
@@ -56,4 +59,20 @@ void timer1_init() {
 
     // Initialize counter
     TCNT1 = 0;
+}
+
+// Function definition for display7Segment
+void display7Segment(uint8_t combinedState) {
+    // Create an array to hold segment patterns for digits 0-3
+    uint8_t segmentPatterns[] = {
+        0b01111110, // 0
+        0b00110000, // 1
+        0b01101101, // 2
+        0b01111001  // 3
+    };
+
+    // Shift out segment pattern for the combined digit
+    PORTB &= ~(1 << SHIFT_LATCH); // Latch low
+    PORTD = segmentPatterns[combinedState]; // Send segment pattern
+    PORTB |= (1 << SHIFT_LATCH); // Latch high
 }
