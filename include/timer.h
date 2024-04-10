@@ -13,4 +13,4 @@ extern volatile uint8_t buttonState2;
 void button_init();
 void timer1_init();
 
-#endif /* TIMER_H_ */
+#endif 

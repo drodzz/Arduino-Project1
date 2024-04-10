@@ -18,4 +18,4 @@ void lcd_data(unsigned char data);
 void lcd_trigger();
 void lcd_send_nibble(unsigned char nibble);
 
-#endif /* LCD_H_ */
+#endif 

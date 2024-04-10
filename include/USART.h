@@ -13,4 +13,4 @@ void usart_transmit(char data);
 // USART receive function
 char usart_receive();
 
-#endif /* USART_H_ */
+#endif 

@@ -3,7 +3,7 @@
 #include "lcd.h"
 #include "timer.h"
 #include "PIN_DEFS.h"
-#include "usart.h" // Include the USART header file
+#include "usart.h" 
 
 void display7Segment(uint8_t combinedState);
 
