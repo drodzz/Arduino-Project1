@@ -1,0 +1,87 @@
+Project Title: Smart Home Energy Monitor
+
+Group Members: Rodney Tayebwa & Remi Pilon
+
+Project Description:
+The Smart Home Energy Monitor is an embedded system designed to monitor and optimize energy usage within a home. It tracks electricity consumption in real-time and provides users with insights to help them make informed decisions about energy usage and conservation.
+
+Mandatory Topics and Components:
+
+GPIO: Used for interfacing with energy monitoring sensors and controlling output devices.
+Timers: Scheduled tasks for data logging and reporting.
+Interrupts: Handle events such as sensor readings or user inputs.
+LEDs: Indicate energy consumption levels or system status.
+Push Buttons: Enable user interaction for viewing data or configuring settings.
+7-segment Display: Display real-time energy consumption data.
+LCD: Display detailed energy usage statistics and system status.
+Shift Registers: Expand GPIO capabilities for driving multiple LEDs or displays efficiently.
+Optional Topic:
+
+USART: Enable communication with external devices or data logging systems.
+Optional Components:
+
+Active or Passive Buzzers: Provide audible alerts for high energy consumption levels or system warnings.
+Potentiometer: Allow users to adjust display brightness or contrast.
+Other Components (with permission): Additional sensors or peripherals for enhanced functionality, such as light sensors for monitoring natural light usage.
+Project Implementation:
+
+Hardware Setup: Create the circuit diagram using TinkerCAD, integrating all mandatory and optional components.
+Software Development: Write embedded C code to interface with GPIO pins, implement timers for data logging, handle interrupts for user inputs, and utilize USART for communication with external devices.
+Energy Monitoring: Interface with electricity consumption sensors to measure and record energy usage in real-time.
+Data Analysis: Analyze energy usage data and calculate metrics such as average consumption, peak usage times, and energy cost estimates.
+User Interface: Design a user interface using the LCD, 7-segment display, and LEDs to present energy usage statistics, system alerts, and user prompts.
+User Interaction: Implement functionality for users to view detailed energy usage data, configure settings, and receive alerts for abnormal energy consumption levels.
+Communication: Enable communication with external devices or data logging systems via USART for long-term data storage or remote monitoring.
+Testing and Calibration: Test the system in various scenarios to ensure accurate energy readings, reliable user interaction, and effective communication with external devices.
+Documentation: Prepare documentation outlining the project design, implementation details, and user instructions for setting up and using the Smart Home Energy Monitor.
+This project aims to empower homeowners to monitor and manage their energy usage more effectively, promoting energy conservation and cost savings while reducing environmental impact.
+
+
+
+
+
+
+
+Steps to wire the topology:
+
+Connect Arduino Uno R3:
+
+Place the Arduino Uno R3 on the breadboard.
+Connect LEDs:
+
+Connect the anodes of LEDs to digital output pins of Arduino via current-limiting resistors.
+Connect the cathodes of LEDs to ground.
+Connect Push Buttons:
+
+Connect one terminal of each push button to a digital input pin of Arduino.
+Connect the other terminal of each push button to ground via a pull-down resistor.
+Connect 7-segment Display:
+
+Use shift register (74HC595) to control the 7-segment display.
+Connect the shift register's data, clock, and latch pins to digital pins of Arduino.
+Connect the common cathode/anode pins of the 7-segment display to the shift register's output pins.
+Connect LCD:
+
+Connect the data pins of the LCD (RS, EN, D4, D5, D6, D7) to digital pins of Arduino.
+Connect the RW pin of the LCD to ground (for write mode).
+Connect the VSS and VDD pins of the LCD to ground and 5V respectively.
+Connect the V0 pin of the LCD to a potentiometer (for contrast control).
+Connect the LED+ pin of the LCD to 5V via a current-limiting resistor.
+Connect the LED- pin of the LCD to ground.
+Connect Buzzer (Optional):
+
+Connect the positive terminal of the buzzer to a digital output pin of Arduino.
+Connect the negative terminal of the buzzer to ground.
+Connect Potentiometer (Optional):
+
+Connect the outer terminals of the potentiometer to 5V and ground.
+Connect the wiper (middle terminal) of the potentiometer to an analog input pin of Arduino.
+Power Supply:
+
+Connect the 5V and GND pins of the Arduino to the breadboard's power rails.
+Connect External Power Source (if needed):
+
+If you're using external components that require more power than the Arduino can provide, connect an external power supply to the breadboard.
+Upload Code:
+
+Write the Arduino code to control the components and upload it to the Arduino Uno R3.
