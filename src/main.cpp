@@ -1,28 +1,58 @@
 #include <avr/io.h>
-#include <util/delay.h>
+#include <avr/interrupt.h>
 #include "lcd.h"
 #include "timer.h"
-#include <avr/interrupt.h>
+#include "PIN_DEFS.h"
 
 void display7Segment(uint8_t combinedState);
 
-// Define pins for 7-segment display
-#define SHIFT_DATA PD2
-#define SHIFT_CLOCK PD3
-#define SHIFT_LATCH PB6
+// Global variable to hold received USART data
+volatile char received_char = '\0';
 
-// Define pins for push buttons
-#define BUTTON_1 PC0
-#define BUTTON_2 PC1
+// USART initialization function
+void usart_init() {
+    // Set baud rate to 9600
+    UBRR0H = (uint8_t)(103 >> 8);
+    UBRR0L = (uint8_t)(103);
 
-// Define pins for LEDs
-#define LED_1 PD5
-#define LED_2 PD6
+    // Enable receiver and transmitter
+    UCSR0B |= (1 << RXEN0) | (1 << TXEN0);
 
-volatile uint8_t buttonState1 = 0;
-volatile uint8_t buttonState2 = 0;
+    // Set frame format: 8 data bits, 1 stop bit
+    UCSR0C |= (1 << UCSZ00) | (1 << UCSZ01);
+
+    // Enable USART receive interrupt
+    UCSR0B |= (1 << RXCIE0);
+}
+
+// USART transmit function
+void usart_transmit(char data) {
+    // Wait for empty transmit buffer
+    while (!(UCSR0A & (1 << UDRE0)))
+        ;
+    // Put data into buffer, sends the data
+    UDR0 = data;
+}
+
+// USART receive function
+char usart_receive() {
+    // Wait for data to be received
+    while (!(UCSR0A & (1 << RXC0)))
+        ;
+    // Get and return received data from buffer
+    return UDR0;
+}
+
+// USART receive interrupt service routine
+ISR(USART_RX_vect) {
+    // Received data
+    received_char = UDR0;
+}
 
 int main() {
+    // Initialize USART
+    usart_init();
+
     // Set up LCD
     lcd_init();
     
@@ -58,6 +88,12 @@ int main() {
 
         // Display button states on 7-segment display
         display7Segment(buttonState1 | (buttonState2 << 1));
+
+        // Transmit received USART data to LCD
+        if (received_char != '\0') {
+            lcd_data(received_char);
+            received_char = '\0'; // Reset received_char
+        }
     }
 
     return 0;

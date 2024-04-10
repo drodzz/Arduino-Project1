@@ -1,6 +1,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "lcd.h"
+#include "LCD.h"
 
 
 // Global variable to count the number of milliseconds
