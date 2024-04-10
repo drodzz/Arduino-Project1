@@ -1,4 +1,5 @@
 #include <avr/io.h>
+#include <avr/interrupt.h>
 #include <util/delay.h>
 
 // Define pins for LCD
@@ -22,12 +23,16 @@
 #define LED_1 PD5
 #define LED_2 PD6
 
+volatile uint8_t buttonState1 = 0;
+volatile uint8_t buttonState2 = 0;
+
 // Function prototypes
 void lcd_init();
 void lcd_cmd(unsigned char cmd);
 void lcd_data(unsigned char data);
 void display7Segment(uint8_t combinedState);
 void button_init();
+void timer1_init();
 
 int main() {
     // Set up LCD
@@ -43,11 +48,13 @@ int main() {
     // Set up LED pins
     DDRD |= (1 << LED_1) | (1 << LED_2);
 
-    while (1) {
-        // Read state of push buttons
-        uint8_t buttonState1 = PINC & (1 << BUTTON_1);
-        uint8_t buttonState2 = PINC & (1 << BUTTON_2);
+    // Initialize Timer1
+    timer1_init();
 
+    // Enable global interrupts
+    sei();
+
+    while (1) {
         // Control LEDs based on button states
         if (buttonState1) {
             PORTD |= (1 << LED_1);
@@ -63,9 +70,6 @@ int main() {
 
         // Display button states on 7-segment display
         display7Segment(buttonState1 | (buttonState2 << 1));
-
-        // Delay for stability
-        _delay_ms(100);
     }
 
     return 0;
@@ -115,6 +119,25 @@ void lcd_data(unsigned char data) {
 void button_init() {
     DDRC &= ~((1 << BUTTON_1) | (1 << BUTTON_2)); // Set pins as input
     PORTC |= (1 << BUTTON_1) | (1 << BUTTON_2); // Enable pull-up resistors
+}
+
+// Initialize Timer1 for 100ms interrupt
+void timer1_init() {
+    // Set prescaler to 1024
+    TCCR1B |= (1 << CS12) | (1 << CS10);
+
+    // Initialize counter
+    TCNT1 = 0;
+
+    // Enable overflow interrupt
+    TIMSK1 |= (1 << TOIE1);
+}
+
+// Timer1 overflow interrupt service routine
+ISR(TIMER1_OVF_vect) {
+    // Read state of push buttons
+    buttonState1 = PINC & (1 << BUTTON_1);
+    buttonState2 = PINC & (1 << BUTTON_2);
 }
 
 // Display button states on 7-segment display
