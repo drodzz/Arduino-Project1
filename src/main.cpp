@@ -2,6 +2,9 @@
 #include <util/delay.h>
 #include "lcd.h"
 #include "timer.h"
+#include <avr/interrupt.h>
+
+void display7Segment(uint8_t combinedState);
 
 // Define pins for 7-segment display
 #define SHIFT_DATA PD2
