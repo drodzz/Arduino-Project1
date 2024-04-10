@@ -9,8 +9,13 @@
 #define LCD_D6 PB4
 #define LCD_D7 PB5
 
+// Define pins for the latch pin of the shift register
+#define SHIFT_LATCH PB6
+
 void lcd_init();
 void lcd_cmd(unsigned char cmd);
 void lcd_data(unsigned char data);
+void lcd_trigger();
+void lcd_send_nibble(unsigned char nibble);
 
 #endif /* LCD_H_ */
