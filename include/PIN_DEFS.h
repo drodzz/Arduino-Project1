@@ -4,7 +4,6 @@
 // Define pins for shift register
 #define SHIFT_DATA 2
 #define SHIFT_CLOCK 3
-#define SHIFT_LATCH 6
 
 // Define pins for LEDs
 #define LED_1 5
