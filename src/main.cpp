@@ -17,6 +17,9 @@ int main() {
     // Set up shift register pins
     DDRD |= (1 << SHIFT_DATA) | (1 << SHIFT_CLOCK);
     DDRB |= (1 << SHIFT_LATCH);
+
+    // Set up buzzer pin
+    DDRD |= (1 << BUZZER_PIN);
     
     // Set up push button pins
     button_init();
@@ -51,6 +54,14 @@ int main() {
         char received_char = usart_receive(); // Receive data from USART
         if (received_char != '\0') {
             lcd_data(received_char);
+        }
+
+        if (buttonState1) {
+            PORTD |= (1 << LED_1); // Turn on LED 1
+            PORTD |= (1 << BUZZER_PIN); // Turn on the buzzer
+        } else {
+            PORTD &= ~(1 << LED_1); // Turn off LED 1
+            PORTD &= ~(1 << BUZZER_PIN); // Turn off the buzzer
         }
     }
 
